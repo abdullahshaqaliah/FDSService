@@ -1,4 +1,4 @@
-# FDSService
+# File Distribution Service (FDS)
 The solution uses the Entity Framework Core Code First Migrations. It comes with a .DbMigrator console application which applies the migrations and also seeds the initial data.
 
 .DbMigrator project has its own appsettings.json. So, if you have changed the connection string above, you should also change this one.

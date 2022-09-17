@@ -39,7 +39,7 @@ yarn start
 It may take a longer time for the first build. Once it finishes, it opens the Angular UI in your default browser with the localhost:4200 address.
 
 ## Note:
-If get error to install angular application please tun the wolloing command
+If get error to install angular application please run the following command
 ```
 npm install --legacy-peer-deps
 ```

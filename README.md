@@ -20,6 +20,11 @@ Initial seed data creates the admin user in the database (with the password is 1
 client user (with the password is Pop@12345)  which is then used to login to the application. So, you need to use .DbMigrator at least once for a new database.
 ```
 # Run the Applications
+Run The command on your solution project folder to install styles for  FDSService.IdentityServer project
+```
+Run abp install-libs 
+```
+
 # Running the FDSService.HttpApi.Host && FDSService.IdentityServer (Server Side)
 
 # Running the Angular Application (Client Side)

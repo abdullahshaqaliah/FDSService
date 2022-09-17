@@ -1,0 +1,262 @@
+<div class="card">
+    <div class="card-header">
+      <div class="row">
+        <div class="col col-md-6">
+          <h5 class="card-title">
+            {{ '::Menu:PackageVersions' | abpLocalization }}
+          </h5>
+        </div>
+        <div class="text-end col col-md-6">
+
+            
+            <div class="text-lg-end pt-5 ">
+                <button id="create"  class="btn btn-secondary" type="button" (click)="showSearchModal()">
+                    <i class="fa fa-search mr-1"></i>
+                    <span>{{ "::Search" | abpLocalization }}</span>
+                  </button>
+<span> &nbsp;</span>
+                <button id="create" *abpPermission="'FDSService.Packages.Create'" class="btn btn-primary mr-2" type="button" (click)="create()">
+                  <i class="fa fa-plus mr-1"></i>
+                  <span>{{ "::Add" | abpLocalization }}</span>
+                </button>
+
+              </div>
+
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+
+  
+
+             
+      <ngx-datatable [rows]="versions.items" [count]="versions.totalCount" [list]="list" default>
+        <ngx-datatable-column [name]="'::Name' | abpLocalization" prop="name"></ngx-datatable-column>
+        <ngx-datatable-column [name]="'::Package' | abpLocalization" prop="packageId">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+                {{ row.package}}
+              </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column [name]="'::Type' | abpLocalization" prop="type">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+                {{ row.typeLabel}}
+              </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column [name]="'::CreationTime' | abpLocalization" prop="creationTime">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            {{ row.creationTime | date }}
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column [name]="'::IsActive' | abpLocalization" prop="isActive">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            <span class="badge {{ row.isActive ? 'bg-success' : 'bg-danger' }}  ms-1">
+                
+                {{ (row.isActive ? 'Is active'    :"Inactive") }}</span>
+            
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column *abpPermission="'FDSService.Packages.Edit' && 'FDSService.Packages.Delete'"
+        [name]="'::Actions' | abpLocalization"
+        [maxWidth]="150"
+        [sortable]="false"
+      >
+        <ng-template  let-row="row" ngx-datatable-cell-template>
+          <div ngbDropdown container="body" class="d-inline-block">
+            <button
+              class="btn btn-primary btn-sm dropdown-toggle"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              ngbDropdownToggle
+            >
+              <i class="fa fa-cog mr-1"></i>{{ '::Actions' | abpLocalization }}
+            </button>
+            <div ngbDropdownMenu >
+              <button ngbDropdownItem *abpPermission="'FDSService.Packages.Edit'" (click)="edit(row.id)">
+                {{ '::Edit' | abpLocalization }}
+              </button>
+              <button ngbDropdownItem (click)="delete(row)" *abpPermission="'FDSService.Packages.Delete'">
+                {{ '::Delete' | abpLocalization }}
+            </button>              
+            </div>
+            
+          </div>
+        </ng-template>
+      </ngx-datatable-column>        
+      </ngx-datatable>
+    </div>
+  </div>
+  
+
+  <abp-modal [(visible)]="isSearchModalOpen">
+    <ng-template #abpHeader>
+        <h3>{{ '::Search' | abpLocalization }}</h3>
+    </ng-template>
+  
+    <ng-template #abpBody>
+
+          <div class="mb-3">
+            <label >Name</label>
+            <input type="text"
+          
+            [(ngModel)]="inputFilter.filter" class="form-control"  />
+          </div>
+          <div class="mb-3">
+            <label >{{'::Package'| abpLocalization}}</label>
+            <select class="form-control" [(ngModel)]="inputFilter.packageId">
+              <option [ngValue]="null" selected>Select a package</option>
+              <option [ngValue]="item.value" *ngFor="let item of packages">
+                {{ item.name }}
+              </option>
+            </select>
+          </div>    
+          <div class="mb-3">
+            <label >{{'::Country'| abpLocalization}}</label>
+            <select class="form-control" [(ngModel)]="inputFilter.countryId">
+              <option [ngValue]="null" selected>Select a country</option>
+              <option [ngValue]="item.value" *ngFor="let item of countries">
+                {{ item.name }}
+              </option>
+            </select>
+          </div>  
+          <div class="mb-3">
+            <label >{{'::Channel'| abpLocalization}}</label>
+            <select class="form-control" [(ngModel)]="inputFilter.channelId">
+              <option [ngValue]="null" selected>Select a channel</option>
+              <option [ngValue]="item.value" *ngFor="let item of channels">
+                {{ item.name }}
+              </option>
+            </select>
+          </div>    
+          <div class="mb-3">
+            <label>{{"::Type" | abpLocalization}}</label><span> * </span>
+            <select class="form-control" [(ngModel)]="inputFilter.type">
+                <option [ngValue]="null">Select a type</option>
+                <option value="0">File</option>
+                <option value="1">Url</option>
+              </select>              
+          </div>                   
+      </ng-template>
+      
+  
+      <ng-template #abpFooter>
+        <button type="button" class="btn btn-secondary" abpClose>
+            {{ '::Close' | abpLocalization }}
+        </button>
+      
+        <!--added save button-->
+        <button class="btn btn-primary" (click)="search()" >
+              <i class="fa fa-search mr-1"></i>
+              {{ '::Search' | abpLocalization }}
+        </button>
+      </ng-template>
+  </abp-modal>
+  
+  <abp-modal [(visible)]="isModalOpen" [busy]="inProgress">
+    <ng-template #abpHeader>
+        <h3>{{ (selectedpackage.id ? '::Edit' : '::New' ) | abpLocalization }}</h3>
+    </ng-template>
+  
+    <ng-template #abpBody>
+        <form [formGroup]="form" (ngSubmit)="save()">
+        <div class="row">
+            <div class="mb-3 col-md-6">
+                <label >{{"::Name" | abpLocalization}}</label><span> * </span>
+                <input type="text" class="form-control" formControlName="name" autofocus />
+              </div>
+              <div class="mb-3 col-md-6">
+                <label >{{"::Package" | abpLocalization}}</label><span> * </span>
+                <select #p  (change)="getVersions(p.value)" class="form-control" formControlName="packageId">
+                    <option [ngValue]="null">Select a  package</option>
+    
+                    <option [value]="item.value" *ngFor="let item of packages">
+                      {{ item.name }}
+                    </option>
+                  </select>
+              </div>  
+              <div class="mb-3 col-md-12">
+                <label >{{"::DependOnVersion" | abpLocalization}}</label><span> * </span>
+                <select class="form-control"  formControlName="dependOnVersionId">
+                    <option [ngValue]="null">Select a  version</option>
+                    <option [value]="item.value.toLowerCase()" *ngFor="let item of dpendOnVersions">
+                      {{ item.name }}
+                    </option>
+                  </select>
+              </div>   
+              <div class="mb-3 col-md-6">
+                <label class="required">{{"::VersionNumber" | abpLocalization}}</label><span> * </span>
+                <input type="number" class="form-control" formControlName="versionNumber"  />
+              </div>
+              <div class="mb-3 col-md-6">
+                <label>{{"::AvailableDate" | abpLocalization}}</label><span> * </span>
+                <input
+                    type="date"
+                  class="form-control"
+              
+                  formControlName="availableDate"
+                  
+                />
+    
+              </div>                           
+              <div class="mb-3 col-md-6">
+                <label >{{"::Countries" | abpLocalization}}</label><span> * </span>
+                <select class="form-control"  multiple formControlName="countries">
+                  <option  *ngFor="let item of countries" [value]="item.value" [innerHtml]="item.name"></option>
+                  </select>
+              </div>   
+              <div class="mb-3 col-md-6">
+                <label >{{"::Channels" | abpLocalization}}</label><span> * </span>
+                <select class="form-control" multiple formControlName="channels">
+                  
+                    <option [value]="item.value" *ngFor="let item of channels">
+                      {{ item.name }}
+                    </option>
+                  </select>
+              </div>                            
+
+
+              <div class="mb-3">
+                <label>{{"::Type" | abpLocalization}}</label><span> * </span>
+                <select class="form-control"
+                #typefile  formControlName="type">
+                    <option value="">Select a  type</option>
+                    <option value="0">File</option>
+                    <option value="1">Url</option>
+                  </select>              
+              </div>
+              <ng-container  *ngIf="typefile.value === '1'">
+              <div class="mb-3" >
+                <label >{{"::URL" | abpLocalization}}</label><span> * </span>
+                <input type="text" class="form-control" formControlName="urlPath"  />
+              </div>     
+              </ng-container>   
+              <ng-container  *ngIf="typefile.value === '0'">
+                <div class="mb-3" >
+                  <label >{{"::FileUpload" | abpLocalization}}</label><span> * </span>
+                  <input type="file" class="form-control" (change)="onFileChange($event)"  />
+                </div>     
+                </ng-container>                        
+              <div class="mb-3">     
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="IsActive" formControlName="isActive">
+                <label class="form-check-label" for="IsActive">
+                  {{"IsActive" | abpLocalization}}
+                </label>
+              </div>
+        </div>            
+        </div>
+        </form>
+      </ng-template>
+      
+  
+      <ng-template #abpFooter>
+        <button type="button" class="btn btn-secondary" abpClose>
+            {{ '::Close' | abpLocalization }}
+        </button>
+      
+        <!--added save button-->
+        <button class="btn btn-primary" (click)="save()" [disabled]="form.invalid">
+              <i class="fa fa-check mr-1"></i>
+              {{ '::Save' | abpLocalization }}
+        </button>
+      </ng-template>
+  </abp-modal>

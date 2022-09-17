@@ -1,0 +1,85 @@
+<div class="card">
+    <div class="card-header">
+      <div class="row">
+        <div class="col col-md-6">
+          <h5 class="card-title">
+            My packages
+          </h5>
+        </div>
+
+      </div>
+    </div>
+    <div class="card-body">          
+      <ngx-datatable [rows]="clientpackages.items" [count]="clientpackages.totalCount" [list]="list" default>
+        <ngx-datatable-column [name]="'::Package' | abpLocalization" prop="packageId">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+                {{ row.package}}
+              </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column [name]="'::Version' | abpLocalization" prop="currentVersionId">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+                {{ row.currentVersion}}
+              </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column [name]="'::CreationTime' | abpLocalization" prop="creationTime">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            {{ row.creationTime | date }}
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column [name]="'::ModificationTime' | abpLocalization" prop="lastModificationTime">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              {{ row.lastModificationTime | date }}
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column 
+          [name]="'::Actions' | abpLocalization"
+          [maxWidth]="200"
+          [sortable]="false">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              <button class="btn btn-primary"  (click)="checkPackageUpdate(row)" >
+                {{ '::CheckUpdates' | abpLocalization }}
+            </button> 
+            </ng-template>
+          </ngx-datatable-column>
+
+          
+      </ngx-datatable>
+    </div>
+</div>
+
+<abp-modal #softwareupdate [(visible)]="isModalOpen" (NgbModalOptions)="{size:'xl'}">
+  <ng-template #abpHeader>
+      <h3>Available versions of the package:{{packageSelected}}</h3>
+  </ng-template>
+
+  <ng-template #abpBody>
+    <ngx-datatable [rows]="versions" [count]="versions.length"  default>
+      <ngx-datatable-column [name]="'::Version' | abpLocalization" prop="name">
+      </ngx-datatable-column>
+
+      <ngx-datatable-column [name]="'::CreationTime' | abpLocalization" prop="creationTime">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          {{ row.creationTime | date }}
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column 
+      [name]="'::Download' | abpLocalization"
+      [maxWidth]="200"
+      [sortable]="false">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <button class="btn btn-primary"  (click)="download(row)" >
+            {{ '::Download' | abpLocalization }}
+        </button> 
+        </ng-template>
+      </ngx-datatable-column>
+    </ngx-datatable>
+    </ng-template>
+    
+
+    <ng-template #abpFooter>
+      <button type="button" class="btn btn-secondary" abpClose>
+          {{ '::Close' | abpLocalization }}
+      </button>
+
+    </ng-template>
+</abp-modal>

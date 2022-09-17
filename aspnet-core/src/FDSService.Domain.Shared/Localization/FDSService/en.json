@@ -1,0 +1,40 @@
+{
+  "culture": "en",
+  "texts": {
+    "Menu:Home": "Home",
+    "Menu:PackageSoftware": "Package software",
+    "Menu:Packages": "Packages",
+    "Menu:PackageVersions": "Package versions",
+    "Menu:MyPackages": "My packages",
+    "Permission:Packages": "Package Management",
+    "Permission:ClientPackages": "Client Packages Management",
+    "Permission:Create": "Create",
+    "Permission:Edit": "Edit",
+    "Permission:Delete": "Delete",
+    "IsActive": "Is Active",
+    "Country": "Country",
+    "CountryId": "Country",
+    "Channel": "Channel",
+    "UrlPath": "URL",
+    "Attachment": "Attachment",
+    "VersionNumber": "Version number",
+    "Name": "Name",
+    "Package": "Package",
+    "AvailableDate": "Available date",
+    "PackageVersion": "Package version",
+    "ModificationTime": "Modification time",
+    "CreationTime": "Creation time",
+    "CheckUpdates": "Check updates",
+    "FDSService:010001": "There is already an package with the same name: {name}.",
+    "FDSService:010002": "There is already an package version with the same name: {name} or version number:{version}",
+    "FDSService:010003": "The package selected already has default version.",
+    "FDSService:010004": "The version of the dependency is already linked to another version.",
+    "FDSService:010005": "Can not select same version with same Dependency version field",
+    "FDSService:010006": "The package is already added to the client",
+    "FDSService:010007": "The package version you are trying to download may have access to it or may not exist",
+    "DeletionWarningMessage": "This `{0}`  will be deleted. Do you want to continue?"
+
+
+
+  }
+}

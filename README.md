@@ -13,7 +13,7 @@ Some basic Git commands are:
 dotnet run
 ```
 For the next time, you can just run it in your IDE as you normally do
-Running the DbMigrator
+**Running the DbMigrator**
 Right click to the .DbMigrator project and select Set as StartUp Project
 ```
 Initial seed data creates the admin user in the database (with the password is 1q2w3E*) and 
@@ -26,7 +26,7 @@ Run abp install-libs
 ```
 
 # Running the FDSService.HttpApi.Host && FDSService.IdentityServer (Server Side)
-
+Right click solution explorer go to properties and select option **Multiple start projects** select the project  FDSService.HttpApi.Host and FDSService.IdentityServer then press apply
 # Running the Angular Application (Client Side)
 Go to the angular folder, open a command line terminal, type the yarn command (we suggest to the yarn package manager while npm install will also work)
 ```
